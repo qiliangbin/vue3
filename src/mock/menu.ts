@@ -20,7 +20,19 @@ const menuList = [
   {
     title: '聊天室',
     id: '2',
-    router: '/history',
+    router: '/chat',
+    icon: 'Document',
+  },
+  {
+    title: '地图',
+    id: '3',
+    router: '/map',
+    icon: 'Document',
+  },
+  {
+    title: '个人信息',
+    id: '4',
+    router: '/self',
     icon: 'Document',
   }
 ]

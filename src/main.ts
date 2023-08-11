@@ -1,4 +1,7 @@
 import './assets/main.less'
+import './tailwind.css'
+import "amfe-flexible/index.js";
+import 'animate.css';
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -16,19 +19,19 @@ const render = (container?:any) => {
   app.use(router)
   app.mount(container ? container.querySelector('#app') : '#app')
 }
+render()
+// const initQiankun = () => {
+//   const app = createApp(App)
+//   renderWithQiankun({
+//     mount(props:any) {
+//       const {container} = props
+//       render(container)
+//     },
+//     bootstrap() {},
+//     unmount() {
+//       app.unmount()
+//     }
+//   })
+// }
 
-const initQiankun = () => {
-  const app = createApp(App)
-  renderWithQiankun({
-    mount(props:any) {
-      const {container} = props
-      render(container)
-    },
-    bootstrap() {},
-    unmount() {
-      app.unmount()
-    }
-  })
-}
-
-qiankunWindow.__POWERED_BY_QIANKUN__ ? initQiankun() : render()
+// qiankunWindow.__POWERED_BY_QIANKUN__ ? initQiankun() : render()

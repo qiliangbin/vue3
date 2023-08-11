@@ -19,6 +19,18 @@ export default defineConfig({
     port: 7777,
     headers: {
       "Access-Control-Allow-Origin": '*'
+    },
+    proxy: {
+      '/api': {
+        target: 'https://api.github.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      },
+      '/myapi': {
+        target: 'http://127.0.0.1:7001',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/myapi/, '')
+      }
     }
   },
   resolve: {

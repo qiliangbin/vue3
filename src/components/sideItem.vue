@@ -1,5 +1,6 @@
 <template>
   <el-menu
+  class="el-menu-vertical-demo"
   :default-active="routeIndex"
   :collapse="collapse"
   >
@@ -52,5 +53,11 @@ const sideJump = (url: string) => {
 <style lang="less" scoped>
 .el-menu{
   // background: #00AEEC;
+}
+</style>
+<style>
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
 }
 </style>
