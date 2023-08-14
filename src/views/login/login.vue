@@ -16,6 +16,7 @@
       </p>
       <button class="login_form_loginBtn mt-[30px]" @click="loginBtn">登录</button>
       <span class="registerBtn">我想你是在找<text @click="goRegister" class="registerBtn_btn">注册</text>按钮吧</span>
+      <span class="registerBtn_btn" style="font-size: 12px; line-height: 14px" @click="forgetPsword">忘记密码</span>
     </div>
   </div>
 </template>
@@ -45,6 +46,9 @@ const loginBtn = async () => {
     ElMessage.success('登录成功')
     router.push('/')
   }
+}
+const forgetPsword = async () => {
+  router.push('/forgetPassword')
 }
 </script>
 <style lang="less" scoped>

@@ -12,11 +12,13 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import {renderWithQiankun, qiankunWindow} from 'vite-plugin-qiankun/dist/helper'
 
+const pinia = createPinia()
+
 const render = (container?:any) => {
   const app = createApp(App)
   app.use(ElementPlus)
-  app.use(createPinia())
   app.use(router)
+  app.use(pinia)
   app.mount(container ? container.querySelector('#app') : '#app')
 }
 render()

@@ -25,6 +25,11 @@ const router = createRouter({
       component: () => import('../views/login/register.vue')
     },
     {
+      path: '/forgetPassword',
+      name: 'ForgetPassword',
+      component: () => import('../views/login/opationIndex.vue')
+    },
+    {
       path: '/',
       name: 'Home',
       component: () => import('../views/home/index.vue'),
@@ -58,8 +63,7 @@ const router = createRouter({
     }
   ]
 })
-
-const whiteRoute = ['/login', '/register', '/retrieve']
+const whiteRoute = ['/login', '/register', '/retrieve', '/forgetPassword']
 router.beforeEach((to, from, next) => {
   if(whiteRoute.includes(to.path)) {
     next()

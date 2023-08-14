@@ -1,13 +1,16 @@
 <template>
   <header class="header">
-    <el-icon>
-      <component @click="changeCollapse" :is="switchIcon"></component>
-    </el-icon>
+    <el-row>
+      <el-col>Logo</el-col>
+    </el-row>
     <el-dropdown>
       <Transition name="scale">
         <span class="avatar"></span>
       </Transition>
       <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item @click="goSelfInfo" :icon="Avatar">个人中心</el-dropdown-item>
+        </el-dropdown-menu>
         <el-dropdown-menu>
           <el-dropdown-item @click="logout" :icon="SwitchButton">退出登录</el-dropdown-item>
         </el-dropdown-menu>
@@ -17,20 +20,18 @@
 </template>
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
-import { Expand, Fold } from '@element-plus/icons-vue'
-import { useGlobalStore } from '@/stores/global'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import {
-  SwitchButton
+  SwitchButton,
+  Avatar
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
-const {changeCollapse, collapse} = toRefs(useGlobalStore())
 const { clearToken } = useUserStore()
-const switchIcon = computed(() => {
-  return collapse.value ? Expand : Fold
-})
+const goSelfInfo = () => {
+  router.push('/self')
+}
 const logout = () => {
   clearToken()
   router.go(0)
