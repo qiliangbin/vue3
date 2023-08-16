@@ -3,10 +3,11 @@ import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', () => {
   const token = ref<string>('')
-
+  const nickName = ref<string>('')
   function setToken(val: string) {
     token.value = val
     localStorage.setItem('token', token.value)
+    localStorage.setItem('nickName', nickName.value)
   }
 
   function getToken() {

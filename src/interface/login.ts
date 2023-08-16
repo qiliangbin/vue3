@@ -13,9 +13,15 @@ interface IForgetForm extends ILoginRegister {
   isForget?: boolean
 }
 
+interface IMyself {
+  name: string
+  description?: string
+  age?: number
+}
 
 export type{
   ILoginRegister,
   IRegister,
-  IForgetForm
+  IForgetForm,
+  IMyself
 }

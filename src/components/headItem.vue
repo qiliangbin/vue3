@@ -1,41 +1,12 @@
 <template>
   <header class="header">
-    <el-row>
-      <el-col>Logo</el-col>
-    </el-row>
-    <el-dropdown>
-      <Transition name="scale">
-        <span class="avatar"></span>
-      </Transition>
-      <template #dropdown>
-        <el-dropdown-menu>
-          <el-dropdown-item @click="goSelfInfo" :icon="Avatar">个人中心</el-dropdown-item>
-        </el-dropdown-menu>
-        <el-dropdown-menu>
-          <el-dropdown-item @click="logout" :icon="SwitchButton">退出登录</el-dropdown-item>
-        </el-dropdown-menu>
-      </template>
-    </el-dropdown>
+    <TabPaneCom />
+    <AvatarDrop />
   </header>
 </template>
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue'
-import { useUserStore } from '@/stores/user'
-import { useRouter } from 'vue-router'
-import {
-  SwitchButton,
-  Avatar
-} from '@element-plus/icons-vue'
-
-const router = useRouter()
-const { clearToken } = useUserStore()
-const goSelfInfo = () => {
-  router.push('/self')
-}
-const logout = () => {
-  clearToken()
-  router.go(0)
-}
+import AvatarDrop from './topHead/avatarDropdown.vue'
+import TabPaneCom from './topHead/tabPane.vue'
 </script>
 <style lang="less" scoped>
 .header{
@@ -46,7 +17,7 @@ const logout = () => {
   font-size: 28px;
   display: flex;
   align-items: center;
-  justify-content: space-between
+  justify-content: space-between;
 }
 .avatar{
   width: 50px;
