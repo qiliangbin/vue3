@@ -47,8 +47,8 @@ const offsetLeft = computed(() => {
   }
 })
 const goTabRoute = (routerName: string, index: number) => {
-  router.push(routerName)
   useGloabl.setRouterIndex(index)
+  router.push(routerName)
 }
 </script>
 <style lang="less" scoped>

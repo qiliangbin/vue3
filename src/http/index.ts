@@ -1,5 +1,9 @@
 import axios, {AxiosInstance, AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios'
 import {ElMessage} from 'element-plus'
+import { useRouter } from 'vue-router'
+import loadConfig from '@/hooks/useLoad';
+
+const router = useRouter()
 // 数据返回的接口
 // 定义请求响应参数，不含data
 interface Result {
@@ -14,7 +18,7 @@ interface ResultData<T = any> extends Result {
 const URL: string = ''
 enum RequestEnums {
   TIMEOUT = 20000,
-  OVERDUE = 600, // 登录失效
+  OVERDUE = 401, // 登录失效
   FAIL = 999, // 请求失败
   SUCCESS = 200, // 请求成功
 }
@@ -41,16 +45,18 @@ class RequestHttp {
      */
    this.service.interceptors.request.use(
      (config: AxiosRequestConfig) => {
-       const token = localStorage.getItem('token') || '';
-       return {
+      loadConfig.show()
+      const token = localStorage.getItem('token') || '';
+        return {
          ...config,
          headers: {
-           'x-access-token': token, // 请求头中携带token信息
+           'authorization': token, // 请求头中携带token信息
          }
        }
      },
      (error: AxiosError) => {
        // 请求报错
+        loadConfig.hide()
        Promise.reject(error)
      }
    )
@@ -61,15 +67,17 @@ class RequestHttp {
      */
     this.service.interceptors.response.use(
       (response: AxiosResponse) => {
+        loadConfig.hide()
         const {data, config} = response; // 解构
         if (data.code === RequestEnums.OVERDUE) {
           // 登录信息失效，应跳转到登录页面，并清空本地的token
           localStorage.setItem('token', '');
-          // router.replace({
-          //   path: '/login'
-          // })
+          router.replace({
+             path: '/login'
+           })
           return Promise.reject(data);
         }
+        console.log(data)
         if (!data.data.data.status) {
           return data.data
         }
@@ -82,6 +90,7 @@ class RequestHttp {
       },
       (error: AxiosError) => {
         const {response} = error;
+        loadConfig.hide()
         if (response) {
           this.handleCode(response.status)
         }

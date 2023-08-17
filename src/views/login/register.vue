@@ -34,6 +34,7 @@ import { useRouter } from 'vue-router';
 import type { IRegister } from '@/interface/login'
 import { registerApi } from '@/api/login'
 import { ElMessage } from 'element-plus';
+
 const router = useRouter()
 const registerForm = ref<IRegister>({
   name: '',
@@ -61,9 +62,9 @@ const registerBtn = async () => {
   width: 100%;
   height: 100vh;
   background-image: url('@/assets/imgs/register.jpg');
-  background-size: 100%;
+  background-size: 100% auto;
   background-attachment: fixed;
-  background-position: right top;
+  background-position: center center;
   background-repeat: no-repeat;
   &_form{
     position: absolute;

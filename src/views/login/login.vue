@@ -28,7 +28,7 @@ import type { ILoginRegister } from '@/interface/login'
 import { ElMessage } from 'element-plus';
 import { useUserStore } from '@/stores/user'
 
-const { setToken } = useUserStore()
+const useUser = useUserStore()
 const loginForm = ref<ILoginRegister>({
   name: '',
   password: '',
@@ -42,7 +42,8 @@ const loginBtn = async () => {
   if(!name || !password) return ElMessage.warning('账号和密码不能为空')
   const res: any = await loginApi(loginForm.value)
   if(res.status) {
-    setToken(res.msg.name)
+    useUser.setToken(res.msg.token)
+    useUser.setNickName(res.msg.data.name)
     ElMessage.success('登录成功')
     router.push('/')
   }

@@ -7,9 +7,11 @@ export const useUserStore = defineStore('user', () => {
   function setToken(val: string) {
     token.value = val
     localStorage.setItem('token', token.value)
+  }
+  function setNickName(name: string) {
+    nickName.value = name
     localStorage.setItem('nickName', nickName.value)
   }
-
   function getToken() {
     const loaclToken = localStorage.getItem('token')
     if(loaclToken) {
@@ -25,5 +27,6 @@ export const useUserStore = defineStore('user', () => {
     setToken,
     getToken,
     clearToken,
+    setNickName,
   }
 })
