@@ -1,7 +1,7 @@
 <template>
   <el-dropdown>
     <Transition name="scale">
-      <span class="avatar"></span>
+      <img class="avatar" :src="globalStore.avatarUrl" />
     </Transition>
     <template #dropdown>
       <el-dropdown-menu>
@@ -16,18 +16,26 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { useGlobalStore } from '@/stores/global';
 import {
   SwitchButton,
   Avatar
 } from '@element-plus/icons-vue'
+import { onMounted } from 'vue';
 
 const router = useRouter()
 const { clearToken } = useUserStore()
+const globalStore = useGlobalStore()
+onMounted(() => {
+  
+})
 const goSelfInfo = () => {
+  globalStore.setRouterIndex(4)
   router.push('/self')
 }
 const logout = () => {
   clearToken()
+  localStorage.setItem('avatar', '')
   router.go(0)
 }
 </script>

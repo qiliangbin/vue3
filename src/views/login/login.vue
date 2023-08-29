@@ -27,8 +27,10 @@ import { loginApi } from '@/api/login'
 import type { ILoginRegister } from '@/interface/login'
 import { ElMessage } from 'element-plus';
 import { useUserStore } from '@/stores/user'
+import { useGlobalStore } from '@/stores/global';
 
 const useUser = useUserStore()
+const useGlobal = useGlobalStore()
 const loginForm = ref<ILoginRegister>({
   name: '',
   password: '',
@@ -44,8 +46,11 @@ const loginBtn = async () => {
   if(res.status) {
     useUser.setToken(res.msg.token)
     useUser.setNickName(res.msg.data.name)
+    localStorage.setItem('avatar', res.msg.data.avatar)
     ElMessage.success('登录成功')
-    router.push('/')
+    router.push('/homepage')
+  } else {
+    ElMessage.error(res.data.msg)
   }
 }
 const forgetPsword = async () => {
@@ -60,8 +65,9 @@ const forgetPsword = async () => {
   background-image: url('@/assets/imgs/loginbg.jpg');
   background-size: 100%;
   background-attachment: fixed;
-  background-position: right top;
+  background-position: center center;
   background-repeat: no-repeat;
+  background-color: rgba(#00AEEC, .4);
   &_form{
     position: absolute;
     inset: 0;

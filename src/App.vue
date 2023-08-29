@@ -2,9 +2,7 @@
 import { onMounted, watchEffect, computed, ref } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
 import { useGlobalStore } from '@/stores/global';
-import sideItem from './components/sideItem.vue';
 import headItem from './components/headItem.vue';
-import SideItem from '@/components/homepage/sideItem.vue';
 const { whiteRoute } = useGlobalStore()
 
 const currentPath = ref<string>('')
@@ -21,8 +19,7 @@ const isLogin = computed(() => {
   <router-view v-if="isLogin" />
   <div class="main" v-else>
     <headItem />
-    <div class="content flex">
-      <SideItem />
+    <div class="content">
       <router-view />
     </div>
   </div>

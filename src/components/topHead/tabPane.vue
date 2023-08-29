@@ -21,7 +21,7 @@ const router = useRouter()
 const tabsList = [
   {
     tabName: '首页',
-    router: '/index'
+    router: '/homepage'
   },
   {
     tabName: '文章',

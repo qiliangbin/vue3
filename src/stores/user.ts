@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 export const useUserStore = defineStore('user', () => {
   const token = ref<string>('')
   const nickName = ref<string>('')
+  const selfInfo = ref<any>()
   function setToken(val: string) {
     token.value = val
     localStorage.setItem('token', token.value)
@@ -11,6 +12,9 @@ export const useUserStore = defineStore('user', () => {
   function setNickName(name: string) {
     nickName.value = name
     localStorage.setItem('nickName', nickName.value)
+  }
+  function getInfo() {
+    selfInfo.value = localStorage.getItem('selfInfo') === '' ? {} : JSON.parse(localStorage.getItem('selfInfo'))
   }
   function getToken() {
     const loaclToken = localStorage.getItem('token')
@@ -24,9 +28,11 @@ export const useUserStore = defineStore('user', () => {
   }
   return {
     token,
+    selfInfo,
     setToken,
     getToken,
     clearToken,
     setNickName,
+    getInfo
   }
 })

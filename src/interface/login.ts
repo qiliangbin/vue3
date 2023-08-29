@@ -17,6 +17,7 @@ interface IMyself {
   name: string
   description?: string
   age?: number
+  avatar?: string
 }
 
 export type{

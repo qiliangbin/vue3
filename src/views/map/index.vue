@@ -7,6 +7,8 @@
       <div v-if="animateEject">Hello，前端一万小时</div>
     </transition>
     <el-button type="primary" @click="showAnimate">弹起</el-button>
+    <input id="files1" ref="fileVal" type="file"  value="" @change="showAnimate">
+    <img :src="imgUrl" alt="">
   </div>
 </template>
 <script lang="ts" setup>
@@ -14,12 +16,16 @@ import Drag from '@/components/drag.vue'
 import Pinao from '@/components/pinao.vue'
 import animateTxt from '@/components/animateTxt.vue'
 import { onMounted, ref, watch, computed } from 'vue'
-import { getGitList, myUserLogin } from '@/api/mapApi'
+import { myUserLogin } from '@/api/mapApi'
+import { uploadImgApi } from '@/api/upload'
+import { uploadFile } from '@/hooks/useUpload'
 import axios from 'axios'
 const mapRef = ref()
 const width = ref()
 const height = ref()
 const animateEject = ref(false)
+const fileVal = ref()
+const imgUrl = ref('')
 watch([mapRef, width], ([newE, oldE], [newW, oldW]) => {
   console.log(newE, oldE)
   console.log(newW, oldW)
@@ -35,8 +41,15 @@ const getGitHub = async () => {
     console.log(e)
   }
 }
-const showAnimate = () => {
-  animateEject.value = !animateEject.value
+const showAnimate = async (val: any) => {
+  const file = val.target.files[0]
+  let formData = new FormData()
+  formData.append('files', file)
+  const res = await uploadImgApi(formData)
+  // imgUrl.value = await uploadFile(val)
+  imgUrl.value = res.data
+
+  // animateEject.value = !animateEject.value
 }
 const animateCss = computed(() => {
   let base = 'animate__animated'

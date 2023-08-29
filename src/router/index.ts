@@ -30,19 +30,29 @@ const router = createRouter({
       component: () => import('../views/login/opationIndex.vue')
     },
     {
-      path: '/',
+      path: '/homepage',
       name: 'Home',
       component: () => import('../views/home/index.vue'),
       children: [
         {
-          path: '/index',
-          name: 'Index',
+          path: '/homepage',
+          name: 'homepage',
+          component: () => import('../views/home/components/homeIndex.vue')
+        },
+        {
+          path: '/homemap',
+          name: 'Homemap',
           component: () => import('../views/home/components/index.vue')
         },
         {
-          path: '/test',
+          path: '/custombg',
           name: 'Test',
-          component: () => import('../views/home/components/test.vue')
+          component: () => import('../views/home/components/customBg.vue')
+        },
+        {
+          path: '/foodcard',
+          name: 'FoodCard',
+          component: () => import('../views/home/components/foodcard.vue')
         }
       ]
     },

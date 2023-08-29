@@ -77,7 +77,6 @@ class RequestHttp {
            })
           return Promise.reject(data);
         }
-        console.log(data)
         if (!data.data.data.status) {
           return data.data
         }

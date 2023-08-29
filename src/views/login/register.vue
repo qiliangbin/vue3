@@ -66,6 +66,7 @@ const registerBtn = async () => {
   background-attachment: fixed;
   background-position: center center;
   background-repeat: no-repeat;
+  background-color: rgba(#fb7299, .4);
   &_form{
     position: absolute;
     inset: 0;

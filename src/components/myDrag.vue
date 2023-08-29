@@ -11,16 +11,16 @@ interface IDragData{
   offset: TOffset
   position: TOffset
 }
-const props = defineProps<{
-  width: {
-    type: number
-  }
-  height: {
-    type: number
-  }
-}>()
+// const props = defineProps<{
+//   width: {
+//     type: number
+//   }
+//   height: {
+//     type: number
+//   }
+// }>()
 const emits = defineEmits(['dragStart', 'dragStop'])
-let {width, height} = toRefs(props)
+// let {width, height} = toRefs(props)
 // watch('')
 const dragData = reactive<IDragData>({
   isDraggable: false,
@@ -54,22 +54,21 @@ const dragEnd = () => {
   dragData.isDraggable = false
 }
 const drag = (el) => {
-  // const windowWidth = document.documentElement.offsetWidth
-  // const windowHeight = document.documentElement.offsetHeight
-  console.log(height.value, width.value)
+  const windowWidth = document.documentElement.offsetWidth
+  const windowHeight = document.documentElement.offsetHeight
   const {clientX, clientY} = el
   const {x, y} = dragData.offset
   dragData.position.top = clientY - y
   dragData.position.left = clientX - x
   if(dragData.position.left<=0) {
     dragData.position.left = 0 
-  } else if(dragData.position.left >= width.value-60) {
-    dragData.position.left = width.value - 62
+  } else if(dragData.position.left >= windowWidth-700) {
+    dragData.position.left = windowWidth - 700
   }
   if(dragData.position.top <= 0) {
     dragData.position.top = 0
-  } else if(dragData.position.top >= height.value - 60) {
-    dragData.position.top = height.value - 62
+  } else if(dragData.position.top >= windowHeight - 200) {
+    dragData.position.top = windowHeight - 200
   }
 }
 </script>

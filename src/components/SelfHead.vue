@@ -1,10 +1,11 @@
 <template>
   <div class="selfhead">
-    <div class="selfhead_bg">
+    <div class="selfhead_bg" :style="{backgroundImage: `url(${selfInfo.bgUrl})`}">
       <div class="selfhead_info flex">
+        <input type="file" class="selfhead_info_avatar" @change="uploadAvatar">
         <el-avatar :size="60" @error="errorHandler">
           <img
-            src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
+            :src="globalStore.avatarUrl"
           />
         </el-avatar>
         <div class="selfhead_msg flex flex-col">
@@ -19,7 +20,7 @@
       <span class="selfhead_bg_icon" @click="showBgDialog = true"><MoreFilled/></span>
     </div>
     <div class="selfhead_content">
-
+      
     </div>
   </div>
   <Teleport to="body">
@@ -30,8 +31,8 @@
       </div>
       <div class="selfhead_drawer_bgs flex flex-wrap justify-between">
         <div @mouseenter="enterBgimg(index)" @mouseleave="leaveBgimg" class="bgimg mb-[20px]" v-for="(item,index) in bgImgs" :key="index">
-          <img class="bgimg_item" :src="item" alt="#">
-          <p @click="enterBgimg(index)" v-if="activeIndex === index" class="bgimg_dsc">使用</p>
+          <img class="bgimg_item" :src="item.imgUrl" alt="#">
+          <p @click.stop="checkBgUrl(index, item.imgUrl)" v-if="activeIndex === index" class="bgimg_dsc">使用</p>
         </div>
       </div>
     </div>
@@ -42,28 +43,68 @@
 import { onMounted, ref } from 'vue'
 import { MoreFilled, CloseBold, SuccessFilled } from '@element-plus/icons-vue'
 import { getMyselfApi, updateMyselfApi } from '@/api/login'
+import { getBgList } from '@/api/selfApi'
 import { ElMessage } from 'element-plus'
+import {useGlobalStore} from '@/stores/global'
+import { useUserStore } from '@/stores/user'
+import { uploadFile } from '@/hooks/useUpload'
+import { da } from 'element-plus/es/locale'
 
-const bgImgs = ["./assets/imgs/headbg.webp", "./assets/imgs/headbg2.webp", "./assets/imgs/headbg3.webp", "./assets/imgs/headbg4.webp", "./assets/imgs/headbg4.webp"]
+const globalStore = useGlobalStore()
+const userStore = useUserStore()
+const bgImgs = ref<any[]>([])
 const nickName = localStorage?.getItem('nickName')
 const showBgDialog = ref<boolean>(false)
 const activeIndex = ref<number | null>(null)
 const selfInfo = ref<any>({})
 const errorHandler = () => true
-const setSign = async () => {
-  const data: any = await updateMyselfApi({name: nickName, description: selfInfo.value.personSign})
+const updateSelfInfo = async (key: string, value: string) => {
+  const data: any = await updateMyselfApi({name: nickName, [key]: value})
   if(data.success) {
-    getMyselfInfo()
     ElMessage.success('修改成功')
+  } else {
+    ElMessage.error(data.data)
   }
+ await getMyselfInfo()
 }
-onMounted(() => {
-  getMyselfInfo()
+const setSign = async () => {
+  updateSelfInfo('description', selfInfo.value.personSign)
+}
+onMounted(async () => {
+  await getMyselfInfo()
+  await getBgImgs()
 })
+
+const getBgImgs = async () => {
+  const { status, msg } = await getBgList({ type: 1 })
+  if(status) {
+    bgImgs.value = msg.map(v => {
+      return { imgUrl: v.imgUrl }
+    })
+  } 
+}
 const getMyselfInfo = async () => {
   const data: any = await getMyselfApi({name: nickName})
   selfInfo.value = data.data
   selfInfo.value.personSign = data.data?.description
+  // selfInfo.bgUrl = data.data?.bgimg ? 'http://rzrve6kbj.hn-bkt.clouddn.com/selfbg/headbg.webp' : data.data?.bgimg
+  selfInfo.value.bgUrl = data.data?.bgimg
+  console.log(data.data.bgimg, selfInfo.bgUrl)
+  localStorage.setItem('selfInfo', JSON.stringify(data.data))
+}
+const checkBgUrl = async (index: number, bgUrl: string) => {
+  activeIndex.value = index
+  selfInfo.bgUrl = bgUrl
+  await updateSelfInfo('bgimg', bgUrl)
+}
+const uploadAvatar = async (e: any) => {
+  globalStore.avatarUrl = await uploadFile(e)
+  const data: any = await updateMyselfApi({name: nickName, avatar: globalStore.avatarUrl})
+  if(data.success) {
+    localStorage.setItem('avatar', globalStore.avatarUrl)
+    getMyselfInfo()
+    ElMessage.success('修改成功')
+  }
 }
 const enterBgimg = (index: number) => {
   activeIndex.value = index
@@ -112,7 +153,7 @@ const handleClose = () => {
           color: #fff;
           width: 100%;
           height: 36px;
-          background: #00a1d6;
+          background: rgba(#00a1d6, .8);
           border-radius: 0 0 6px 6px;
           font-size: 16px;
           line-height: 36px;
@@ -148,6 +189,13 @@ const handleClose = () => {
     padding: 0 10px;
     position: absolute;
     bottom: 30px;
+    &_avatar {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      opacity: 0;
+      border-radius: 50%;
+    }
   }
   &_msg {
     font-size: 16px;
