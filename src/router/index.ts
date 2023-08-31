@@ -42,7 +42,7 @@ const router = createRouter({
         {
           path: '/homemap',
           name: 'Homemap',
-          component: () => import('../views/home/components/index.vue')
+          component: () => import('../views/home/components/homeIndex.vue')
         },
         {
           path: '/custombg',

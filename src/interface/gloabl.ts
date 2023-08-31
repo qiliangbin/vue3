@@ -1,4 +1,4 @@
-interface IBgParams{
+interface IBgParams {
   type: number
   size?: number
   page?: number
@@ -6,6 +6,12 @@ interface IBgParams{
   update_time?: Date
 }
 
+interface IDelParams {
+  id: number
+  operator: string
+}
+
 export type {
-  IBgParams
+  IBgParams,
+  IDelParams
 }
